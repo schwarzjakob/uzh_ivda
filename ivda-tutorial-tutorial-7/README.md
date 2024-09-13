@@ -58,14 +58,13 @@ drawScatterPlot() {
 2. Create the clickScatterPlot method. Upon a click, retrieve the point number and then emit an event with (pn+1 = company id). Emitting an event will notify the parent (configuration panel) that the selected company has changed. Then, we revert all colors to black in case of previous clicks and change the current selection to blue. Then we call the Plotly.restyle function to update the plot.
 ```Javascript
 clickScatterPlot() {
-      var pn = 0
       var that = this
       var myPlot = document.getElementById('myScatterPlot')
       myPlot.on('plotly_click', function (data) {
         for (var i = 0; i < data.points.length; i++) {
 
           // get the index of point
-          pn = data.points[i].pointNumber;
+          let pn = data.points[i].pointNumber;
 
           // emit event to change the currently selected company in the a) configuration panel
           // and b) update the Profit View
