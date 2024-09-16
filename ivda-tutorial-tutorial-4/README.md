@@ -170,6 +170,45 @@ api.add_resource(Companies, '/companies/<int:id>')
 ]
 }
 ```
+#### Troubleshooting MongoDB: ServerSelectionTimeoutError
+
+If you encounter a `ServerSelectionTimeoutError` in MongoDB, this usually means your application is unable to connect to the MongoDB server. The most common cause is that MongoDB is not running.
+
+To check if MongoDB is running and start it if necessary, follow these steps depending on your operating system:
+
+##### For macOS:
+1. **Check if MongoDB is running**:
+   Open a terminal and run:
+   ```bash
+   ps aux | grep mongod
+2. **Start MongoDB**: 
+If MongoDB was installed using Homebrew, you can start it by running:
+   ```bash
+   brew services start mongodb-community
+   
+##### For Linux:
+1. **Check if MongoDB is running**:
+   Open a terminal and run:
+   ```bash
+    sudo systemctl status mongod
+If MongoDB is not running, proceed to the next step.
+2. **Start MongoDB**: 
+Run the following command to start MongoDB:
+   ```bash
+   sudo systemctl start mongod
+
+##### For Windows:
+1. **Check if MongoDB is running**: 
+Open a command prompt or PowerShell and run:
+    ```bash
+    netstat -a -n -o | findstr 27017
+If MongoDB is not running, proceed to the next step.
+2. ***Start MongoDB***: 
+Run:
+    ```bash
+    net start MongoDB
+ 
+
 #### References
 [MongoDB Crash Course 2022](https://www.youtube.com/watch?v=2QQGWYe7IDU)\
 [Python REST API Tutorial - Building a Flask REST API](https://www.youtube.com/watch?v=GMppyAPbLYk)\
