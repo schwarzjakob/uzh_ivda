@@ -20,8 +20,5 @@ Make a decision on the design that visually highlights the configuration panel.
 3. Make sure to also include meaningful titles, legends, and axis descriptions. 
 4. Write a short paragraph on your decisions in the submission pdf - the specific instructions are included in the pdf. 
 
-#### Submission
-Your submission of this work will be done via OLAT, more information is available in the pdf "Instructions Assignment 1: IVDA Tutorial 2023" which is also on OLAT.
-Information on the point distribution is also in this document. 
 
 #### References

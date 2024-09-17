@@ -1,28 +1,14 @@
 ### Tutorial-10: LLM-API Integration
 
-## Table of Contents
+#### Table of Contents
 
-1. [Introduction](#introduction)
-2. [Getting Started](#getting-started)
-3. [Installation](#installation)
+More information on this step will come shortly.
+
+1. [Submission](#submission)
 
 
-## Introduction
+#### Submission
+Your submission of this work will be done via OLAT, more information is available in the pdf "Instructions Assignment 1: IVDA Tutorial 2023" which is also on OLAT.
+Information on the point distribution is also in this document. 
 
-Provide a brief description of the project here.
 
-## Getting Started
-
-Instructions for setting up the environment, dependencies, etc.
-
-## Installation
-
-Explain how to install the project on a local machine.
-
-## Configuration
-
-Provide instructions for configuring the project.
-
-## Running the Application
-
-Steps to run the application.
