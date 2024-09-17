@@ -20,5 +20,3 @@ Make a decision on the design that visually highlights the configuration panel.
 3. Make sure to also include meaningful titles, legends, and axis descriptions. 
 4. Write a short paragraph on your decisions in the submission pdf - the specific instructions are included in the pdf. 
 
-
-#### References
