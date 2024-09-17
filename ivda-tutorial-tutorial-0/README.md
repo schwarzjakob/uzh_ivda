@@ -1,8 +1,8 @@
 ## Tutorial Set
 
-Hi and welcome to the tutorial set on how to build an IVDA app. Together, we will build an exemplary webapp in 9 steps using Vue.Js and Python where you will learn the foundations of the involved technologies and their interplay.
+Hi and welcome to the tutorial set on how to build an IVDA app. Together, we will build an exemplary webapp in 10 steps using Vue.Js and Python where you will learn the foundations of the involved technologies and their interplay.
 Each tutorial set is further accompanied by references where the concepts needed are explained in more detail.
-The time required for each step is not linear — while steps 0-8 are relatively straightforward, step 9 is more complex and will require additional time and focus. Plan accordingly.
+The time required for each step is not linear — while steps 0-8 are relatively straightforward, step 9 and 10 are more complex and will require additional time and focus. Plan accordingly.
 
 **You should be able to clone the repository without developer access. Cloning it, and then working on your local machine is the easiest way to complete A1.** You're encouraged to start your own repository to keep track of your progress, but this is not a requirement.
 
