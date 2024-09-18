@@ -1,4 +1,5 @@
 ### Tutorial-6: Dropdown Interactions
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration.
 
 In this tutorial, we would like to achieve the following. A user makes a change in the configuration panel. Then, the Company Overview and Profit View should update accordingly.
 In order to achieve this, we have to adapt the backend and the frontend.

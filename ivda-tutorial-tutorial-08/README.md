@@ -1,4 +1,6 @@
 ### Tutorial-8: Implement the Algorithms
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration. 
+
 In this tutorial, we will adjust the backend to switch between different models depending on the user specified algorithm.
 
 1. Switch to PyCharm, stop the running backend with ``ctrl + c`` in the terminal and install the following 2 libraries:

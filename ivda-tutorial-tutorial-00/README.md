@@ -6,6 +6,7 @@ The time required for each step is not linear — while steps 0-8 are relatively
 
 **You should be able to clone the repository without developer access. Cloning it, and then working on your local machine is the easiest way to complete A1.** You're encouraged to start your own repository to keep track of your progress, but this is not a requirement.
 
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration. 
 We’ve included instructions with commands for both Unix and Windows environments to set up the project. In case you’re missing any Windows-specific commands or need further clarification, you can refer to resources like [this guide on Unix to Windows command equivalents](https://ioam.github.io/topographica/Downloads/win32notes.html) or [this command comparison sheet](https://gist.github.com/carlessanagustin/266171818584b3880f72a625dfa2513b).
 
 ### Tutorial-0: Frontend Boilerplate Code

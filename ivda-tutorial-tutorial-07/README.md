@@ -1,4 +1,5 @@
 ### Tutorial-7 Plot Interaction
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration.
 
 In this tutorial set, the goal is that a user can click on a company in the Company Overview scatterplot which then reloads the Profit View with the clicked company.
 To achieve this, we will implement a click event upon a click on a data point in the scatterplot. This click event will then trigger a change in the Profit View.

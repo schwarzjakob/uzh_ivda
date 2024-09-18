@@ -1,5 +1,6 @@
-
 ### Tutorial-5: Visualize the Company Data in the Frontend with Plotly
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration. 
+
 In this tutorial, we will improve the general styling, the plots and make updates to the configuration panel. So let's start!
 
 1. Run the backend inside a terminal in PyCharm using ``python app.py run``
