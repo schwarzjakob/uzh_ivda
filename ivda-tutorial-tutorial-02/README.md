@@ -1,5 +1,5 @@
 ### Tutorial-2: Add Plotly.js and Basic Plots
-References: Plotly, lifecycle vue
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration.
 
 1. Stop the server (if running) with "ctrl+c" inside the IDE terminal. Hint: mesmorize the basic commands such as ``npm run serve`` to start the webapp or "ctrl+c" to stop it.
 2. Add the "Plotly.js" library to our project. Run the following command in the IDE terminal

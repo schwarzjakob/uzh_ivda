@@ -1,4 +1,6 @@
 ### Tutorial-9: Add Functionality and Design
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration. 
+
 This part is less guided than the tutorials before. It is meant for you to further work on the code and enhance the app functionalities. 
 
 #### Basic adjustments

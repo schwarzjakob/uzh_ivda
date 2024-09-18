@@ -1,4 +1,5 @@
 ### Tutorial-1: Create the Frontend Components of Our Project
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration. 
 
 #### Create a Basic Layout
 

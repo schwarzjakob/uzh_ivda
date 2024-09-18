@@ -1,4 +1,6 @@
 ### Tutorial-4 Setup MongoDB
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration. 
+
 We will add the data to a nosql MongoDB database. Then we will access the database in the backend and create two endpoints. One endpoint to get information of all companies and one endpoint to get information of a specific endpoint.
 
 #### Install MongoDB and Import the Data

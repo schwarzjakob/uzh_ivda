@@ -1,5 +1,7 @@
 
 ### Tutorial-3: Create the Backend
+**Disclaimer**: This tutorial was prepared on an Apple M1 system running macOS Sonoma 14.6.1. Please note that slight variations in setup and execution may exist if you are using a different operating system or hardware configuration. 
+
 The goal of this part of the tutorial is to create a basic backend and to create a dummy API endpoint.
 
 #### Adapt the Folder structure
