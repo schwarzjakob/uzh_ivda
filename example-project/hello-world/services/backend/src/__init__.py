@@ -46,15 +46,22 @@ class Companies(Resource):
         args = request.args.to_dict()
         # retrieve the profit
         profit = company.profit
-        # add to df
-        profit_df = pd.DataFrame(profit).iloc[::-1]
+
+        # Set default is_predicted flag to False for all real data
+        for entry in company.profit:
+            entry["is_predicted"] = False
+
         if args["algorithm"] == "random":
-            # retrieve the profit value from 2021
-            prediction_value = int(profit_df["value"].iloc[-1])
-            # add the value to profit list at position 0
-            company.profit.insert(0, {"year": 2022, "value": prediction_value})
+            # retrieve the profit value from 2021 (hardcoded here, but it could be dynamic)
+            prediction_value = int(profit[-1]["value"])
+            # add the predicted value for 2022
+            company.profit.insert(
+                0, {"year": 2022, "value": prediction_value, "is_predicted": True}
+            )
+
         elif args["algorithm"] == "regression":
             # create model
+            profit_df = pd.DataFrame(profit).iloc[::-1]  # Create DataFrame to fit model
             model_ag = AutoReg(
                 endog=profit_df["value"],
                 lags=1,
@@ -71,8 +78,12 @@ class Companies(Resource):
             prediction_value = fit_ag.predict(
                 start=len(profit_df), end=len(profit_df), dynamic=False
             ).values[0]
-            # add the value to profit list at position 0
-            company.profit.insert(0, {"year": 2022, "value": prediction_value})
+            # add the predicted value for 2022
+            company.profit.insert(
+                0, {"year": 2022, "value": prediction_value, "is_predicted": True}
+            )
+
+        # return data as json
         return company.to_json()
 
 
