@@ -2,8 +2,10 @@
   <div>
     <v-container fluid>
       <v-row>
+        <!-- Sidebar with separate cards -->
         <v-col cols="12" md="2" class="sideBar">
-          <v-card>
+          <!-- Company Overview Card -->
+          <v-card class="mb-4">
             <v-row>
               <v-col cols="12" sm="12">
                 <div class="control-panel-font">Company Overview</div>
@@ -13,13 +15,17 @@
               <v-col cols="12" sm="12">
                 <v-select
                   :items="categories.values"
-                  label="Select a category"
+                  label="Category"
                   dense
                   v-model="categories.selectedValue"
                   @change="changeCategory"
                 ></v-select>
               </v-col>
             </v-row>
+          </v-card>
+
+          <!-- Profit View Card -->
+          <v-card>
             <v-row>
               <v-col cols="12" sm="12">
                 <div class="control-panel-font">Profit View of Company</div>
@@ -29,7 +35,7 @@
               <v-col cols="12" sm="12">
                 <v-select
                   :items="companies.values"
-                  label="Select a company"
+                  label="Company"
                   dense
                   v-model="companies.selectedValue"
                   @change="changeCompany"
@@ -40,7 +46,7 @@
               <v-col cols="12" sm="12">
                 <v-select
                   :items="algorithm.values"
-                  label="Select an algorithm for prediction"
+                  label="Prediction Algorithm"
                   dense
                   v-model="algorithm.selectedValue"
                   @change="changeAlgorithm"
@@ -49,6 +55,8 @@
             </v-row>
           </v-card>
         </v-col>
+
+        <!-- Scatter Plot -->
         <v-col cols="12" md="5">
           <ScatterPlot
             :key="scatterPlotId"
@@ -56,6 +64,8 @@
             @changeCurrentlySelectedCompany="changeCurrentlySelectedCompany"
           />
         </v-col>
+
+        <!-- Line Plot -->
         <v-col cols="12" md="5">
           <LinePlot
             :key="linePlotId"
@@ -67,6 +77,7 @@
     </v-container>
   </div>
 </template>
+
 <script>
 import ScatterPlot from "./ScatterPlot";
 import LinePlot from "./LinePlot";
@@ -105,20 +116,3 @@ export default {
   }),
 };
 </script>
-<style scoped>
-.control-panel-font {
-  font-family: "Open Sans", verdana, arial, sans-serif;
-  align-items: center;
-  font-size: 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  display: flex;
-  font-weight: 500;
-  height: 40px;
-}
-.sideBar {
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-  background: #fafafa;
-  padding-left: 17px;
-  height: calc(100vh - 50px);
-}
-</style>

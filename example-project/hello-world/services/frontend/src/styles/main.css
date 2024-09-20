@@ -1,0 +1,233 @@
+:root {
+  /* UZH Blue */
+  --uzh-blue: #0028a5;
+  --uzh-blue-v1: #bacbff;
+  --uzh-blue-v2: #7596ff;
+  --uzh-blue-v3: #3062ff;
+  --uzh-blue-v4: #001e7c;
+  --uzh-blue-v5: #001452;
+
+  /* UZH Cyan */
+  --uzh-cyan: #4ac9e3;
+  --uzh-cyan-v1: #dbf4f9;
+  --uzh-cyan-v2: #b7e9f4;
+  --uzh-cyan-v3: #92dfee;
+  --uzh-cyan-v4: #1ea7c4;
+  --uzh-cyan-v5: #147082;
+
+  /* UZH Apple */
+  --uzh-apple: #a5d233;
+  --uzh-apple-v1: #ecf6d6;
+  --uzh-apple-v2: #dbedad;
+  --uzh-apple-v3: #c8e485;
+  --uzh-apple-v4: #7ca023;
+  --uzh-apple-v5: #536b18;
+
+  /* UZH Gold */
+  --uzh-gold: #ffc845;
+  --uzh-gold-v1: #fff4da;
+  --uzh-gold-v2: #ffe9b5;
+  --uzh-gold-v3: #ffde8f;
+  --uzh-gold-v4: #f3ab00;
+  --uzh-gold-v5: #a27200;
+
+  /* UZH Orange */
+  --uzh-orange: #fc4c02;
+  --uzh-orange-v1: #ffdbcc;
+  --uzh-orange-v2: #feb799;
+  --uzh-orange-v3: #fe9367;
+  --uzh-orange-v4: #bd3902;
+  --uzh-orange-v5: #7e2601;
+
+  /* UZH Berry */
+  --uzh-berry: #bf0d3e;
+  --uzh-berry-v1: #fbc6d4;
+  --uzh-berry-v2: #f78caa;
+  --uzh-berry-v3: #f3537f;
+  --uzh-berry-v4: #8f0a2e;
+  --uzh-berry-v5: #60061f;
+
+  /* UZH Grey */
+  --uzh-grey-v1: #c2c2c2;
+  --uzh-grey-v2: #a3a3a3;
+  --uzh-grey-v3: #666666;
+  --uzh-grey-v4: #4d4d4d;
+  --uzh-grey-v5: #333333;
+
+  /* UZH Light Grey */
+  --uzh-light-grey-v1: #fafafa;
+  --uzh-light-grey-v2: #efefef;
+  --uzh-light-grey-v3: #e7e7e7;
+  --uzh-light-grey-v4: #e0e0e0;
+  --uzh-light-grey-v5: #d7d7d7;
+
+  /* UZH Black */
+  --uzh-black: #000000;
+
+  /* UZH White */
+  --uzh-white: #ffffff;
+
+  --header-height: 2.75rem;
+  --icon-color: #fff;
+  --font-family: "72", "72full", Arial, Helvetica, sans-serif;
+}
+
+/* Override the Vuetify toolbar content height */
+.v-toolbar__content {
+  height: var(--header-height) !important;
+}
+
+.v-application {
+  overflow: hidden !important;
+}
+
+.v-main {
+  overflow: hidden !important;
+  height: 100vh; /* Ensure it takes the full viewport height */
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: calc(100vh - var(--header-height)) !important;
+  top: var(--header-height);
+  position: relative;
+  overflow: hidden; /* This will prevent any scrolling */
+}
+
+/* Remove padding and margin from Vuetify container and row */
+.v-container {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.v-col {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.v-row {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* App bar header styling */
+.v-app-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--uzh-blue) !important;
+  color: var(--uzh-white) !important;
+  height: var(--header-height) !important;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+}
+
+/* Logo image styling */
+.v-app-bar img {
+  width: 70px; /* UZH logo width */
+}
+
+/* Text in the app bar */
+.v-app-bar h2 {
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: text;
+  display: block;
+  flex-shrink: 0;
+  font-family: var(--font-family);
+  font-size: 1rem;
+  font-weight: 400;
+  height: 18px;
+  margin-block-end: 0px;
+  margin-block-start: 0px;
+  margin-bottom: 0px;
+  margin-inline-end: 0px;
+  margin-inline-start: 16px;
+  margin-left: 1rem;
+  margin-right: 0px;
+  margin-top: 0px;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+  text-shadow: none;
+  text-wrap-mode: nowrap;
+  white-space-collapse: collapse;
+  line-height: 18px; /* Matches the app bar height */
+}
+
+.logoMarginLeft {
+  margin-left: 41px !important; /* Custom margin-left from UZH styles */
+}
+
+/* Global styles for control panel font */
+.control-panel-font {
+  font-family: "Open Sans", verdana, arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--uzh-black);
+  margin-bottom: 10px;
+  padding: 8px 0;
+  text-align: center; /* Center the section title */
+}
+
+/* Sidebar Styling */
+.sideBar {
+  background: var(--uzh-blue-v1);
+  padding: 20px;
+  height: calc(100vh - var(--header-height));
+  flex-direction: column;
+}
+
+/* Control Panel Font */
+.control-panel-font {
+  font-family: "Open Sans", verdana, arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--uzh-black);
+  margin-bottom: 10px;
+  padding: 8px 0;
+  text-align: center;
+}
+
+/* Card Styling */
+.v-card {
+  background-color: var(--uzh-white);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* Remove Default Underlines */
+.v-field__append-inner,
+.v-field__outline,
+.v-input__details {
+  display: none !important;
+}
+
+/* Remove background radius on select field inner content */
+.v-select .v-input__control {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  background-clip: padding-box !important;
+}
+
+/* Dropdown Menu Styling */
+.v-overlay__content,
+.v-menu__content {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: var(--uzh-white) !important;
+  margin-top: -1px !important;
+}
+
+/* Add shadow to select dropdown on open */
+.v-select:focus-within {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Ensure the dropdown closes after selecting an option */
+.v-menu__content,
+.v-select {
+  pointer-events: auto !important; /* Allow interaction with select field */
+}

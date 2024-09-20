@@ -1,19 +1,28 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <h2>Example Project</h2>
+    <v-app-bar app dark>
+      <!-- UZH logo -->
+      <img
+        :src="require('@/assets/uzh.png')"
+        alt="UZH Logo"
+        class="logoMarginLeft smallPaddingTop"
+      />
+
+      <!-- Header text -->
+      <h2><span>Jakob Schwarz | 24-720-252</span></h2>
     </v-app-bar>
+
     <v-main>
-      <ConfigurationPanel/>
+      <ConfigurationPanel />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import ConfigurationPanel from './components/ConfigurationPanel.vue'
+import ConfigurationPanel from "./components/ConfigurationPanel.vue";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     ConfigurationPanel,
@@ -22,17 +31,5 @@ export default {
   data: () => ({
     //
   }),
-}
+};
 </script>
-
-<style>
-/* disable scrolling */
-html {
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none; /* For Internet Explorer and Edge */
-  overflow: hidden;
-}
-html::-webkit-scrollbar {
-  width: 0px; /* For Chrome, Safari, and Opera */
-}
-</style>
