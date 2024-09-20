@@ -1,0 +1,7 @@
+flask==2.1.1
+flask-restx==0.5.1
+werkzeug==2.0.3
+fastapi
+flask_pymongo
+pymongo
+flask_cors
