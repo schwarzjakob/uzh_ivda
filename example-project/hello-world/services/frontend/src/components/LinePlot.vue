@@ -61,7 +61,16 @@ export default {
         type: "scatter",
       };
       var data = [trace1];
-      var layout = {};
+      var layout = {
+        xaxis: {
+          title: "Year",
+          zeroline: false,
+        },
+        yaxis: {
+          title: "Profit",
+          zeroline: false,
+        },
+      };
       var config = { responsive: true, displayModeBar: false };
       Plotly.newPlot("myLinePlot", data, layout, config);
     },
