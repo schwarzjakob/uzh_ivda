@@ -98,21 +98,21 @@ export default {
       values: ["none", "random", "regression"],
       selectedValue: "none",
     },
-    methods: {
-      changeCategory() {
-        this.scatterPlotId += 1;
-      },
-      changeCompany() {
-        this.linePlotId += 1;
-      },
-      changeAlgorithm() {
-        this.linePlotId += 1;
-      },
-      changeCurrentlySelectedCompany(companyId) {
-        this.companies.selectedValue = companyId;
-        this.changeCompany();
-      },
-    },
   }),
+  methods: {
+    changeCategory() {
+      this.scatterPlotId += 1;
+    },
+    changeCompany() {
+      this.linePlotId += 1;
+    },
+    changeAlgorithm() {
+      this.linePlotId += 1;
+    },
+    changeCurrentlySelectedCompany(companyId) {
+      this.companies.selectedValue = companyId;
+      this.changeCompany();
+    },
+  },
 };
 </script>
