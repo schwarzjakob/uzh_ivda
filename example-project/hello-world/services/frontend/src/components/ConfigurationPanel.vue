@@ -18,7 +18,7 @@
                   label="Category"
                   dense
                   v-model="categories.selectedValue"
-                  @change="changeCategory"
+                  @update:model-value="changeCategory"
                 ></v-select>
               </v-col>
             </v-row>
@@ -121,65 +121,54 @@ export default {
       selectedValue: "none",
     },
   }),
-  created() {
-    // Fetch companies from backend
+  mounted() {
+    console.log("Component mounted. Now fetching companies.");
     this.fetchCompanies();
   },
   methods: {
     fetchCompanies() {
-      // Use fetch API to retrieve data from your Flask backend
-      fetch("http://localhost:5000/companies?category=All")
-        .then((response) => response.json())
+      const category = this.categories.selectedValue; // Ensure this value is reactive
+      console.log("Fetching companies for category:", category);
+
+      fetch(`http://localhost:5000/companies?category=${category}`)
+        .then((response) => {
+          console.log("API response received:", response);
+          return response.json();
+        })
         .then((data) => {
-          // Map the response to fit the structure of the v-select
-          this.companies.values = data.map((company) => ({
-            id: company.id, // Will be passed as v-select value
-            name: company.name, // Will be displayed in v-select dropdown
+          console.log("Parsed JSON data:", data);
+          const updatedCompanies = data.map((company) => ({
+            id: company.id,
+            name: company.name,
           }));
+          console.log("Fetched companies:", updatedCompanies);
 
-          // Set default selected value to the first company in the list if not already set
-          if (
-            !this.companies.selectedValue &&
-            this.companies.values.length > 0
-          ) {
-            this.companies.selectedValue = this.companies.values[0].id;
+          this.companies.values = [...updatedCompanies];
+          if (this.companies.values.length > 0) {
+            if (
+              !this.companies.values.some(
+                (company) => company.id === this.companies.selectedValue
+              )
+            ) {
+              this.companies.selectedValue = this.companies.values[0].id;
+            }
+          } else {
+            this.companies.selectedValue = null;
           }
-
-          console.log("Fetched companies:", this.companies.values);
         })
         .catch((error) => {
           console.error("Error fetching companies:", error);
         });
     },
     changeCategory() {
-      this.scatterPlotId += 1;
       console.log("Category changed to:", this.categories.selectedValue);
-      // Fetch companies based on the new selected category
-      fetch(
-        `http://localhost:5000/companies?category=${this.categories.selectedValue}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          this.companies.values = data.map((company) => ({
-            id: company.id, // Set ID as item value
-            name: company.name, // Set name as item text
-          }));
+      // Refetch companies when category changes
+      this.fetchCompanies(); // Use the selected category directly
 
-          // Set default selected value to the first company in the list
-          if (this.companies.values.length > 0) {
-            this.companies.selectedValue = this.companies.values[0].id;
-          } else {
-            this.companies.selectedValue = null;
-          }
+      // Update scatterPlotId to refresh scatter plot
+      this.scatterPlotId += 1;
 
-          console.log(
-            "Fetched companies after category change:",
-            this.companies.values
-          );
-        })
-        .catch((error) => {
-          console.error("Error fetching companies:", error);
-        });
+      console.log("Category changed to:", this.categories.selectedValue);
     },
     changeCompany() {
       this.linePlotId += 1;

@@ -51,17 +51,9 @@ export default {
         this.$props.selectedCompany +
         "?algorithm=" +
         this.$props.selectedAlgorithm;
-      console.log("ReqURL " + reqUrl);
       // await response and data
       const response = await fetch(reqUrl);
       const responseData = await response.json();
-
-      // Console log to inspect the data structure
-      responseData.profit.forEach((profit) => {
-        console.log(
-          `Year: ${profit.year}, Value: ${profit.value}, Predicted: ${profit.is_predicted}`
-        );
-      });
 
       // transform data to usable by lineplot
       responseData.profit.forEach((profit) => {

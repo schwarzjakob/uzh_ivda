@@ -44,8 +44,6 @@ export default {
       const response = await fetch(reqUrl);
       const companyData = await response.json();
 
-      console.log("Fetched company data:", companyData);
-
       // Set company name for the header
       this.selectedCompanyName = companyData.name;
 
