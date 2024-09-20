@@ -22,8 +22,9 @@ export default {
     },
   },
   data: () => ({
-    ScatterPlotData: { x: [], y: [] },
+    ScatterPlotData: { x: [], y: [], name: [] },
   }),
+
   mounted() {
     this.fetchData();
   },
@@ -34,12 +35,13 @@ export default {
         "http://127.0.0.1:5000/companies?category=" +
         this.$props.selectedCategory;
       console.log("ReqURL " + reqUrl);
-
       // await response and data
       const response = await fetch(reqUrl);
       const responseData = await response.json();
+
       // transform data to usable by scatterplot
       responseData.forEach((company) => {
+        this.ScatterPlotData.name.push(company.name);
         this.ScatterPlotData.x.push(company.employees);
         this.ScatterPlotData.y.push(company.founding_year);
       });
@@ -52,11 +54,41 @@ export default {
         y: this.ScatterPlotData.y,
         mode: "markers",
         type: "scatter",
+        text: this.ScatterPlotData.name,
+        marker: {
+          color: "black",
+          size: 12,
+        },
       };
       var data = [trace1];
       var layout = {};
       var config = { responsive: true, displayModeBar: false };
       Plotly.newPlot("myScatterPlot", data, layout, config);
+      this.clickScatterPlot();
+    },
+    clickScatterPlot() {
+      var that = this;
+      var myPlot = document.getElementById("myScatterPlot");
+      myPlot.on("plotly_click", function (data) {
+        for (var i = 0; i < data.points.length; i++) {
+          // get the index of point
+          let pn = data.points[i].pointNumber;
+
+          // emit event to change the currently selected company in the a) configuration panel
+          // and b) update the Profit View
+          that.$emit("changeCurrentlySelectedCompany", pn + 1);
+
+          // revert all colors
+          var colors = ["#00000" * 15];
+
+          // and change currently selected color to blue
+          colors[pn] = "#3777ee";
+
+          // update the marker and plot
+          var update = { marker: { color: colors, size: 12 } };
+          Plotly.restyle("myScatterPlot", update);
+        }
+      });
     },
   },
 };
