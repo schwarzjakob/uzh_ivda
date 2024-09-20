@@ -3,7 +3,7 @@
     <v-row align="center" justify="center" class="mt-1 mb-0">
       <h3>Profit View of Company: {{ $props.selectedCompany }}</h3>
     </v-row>
-    <div style="height: 90vh">
+    <div style="height: 100%">
       <div id="myLinePlot" style="height: inherit"></div>
     </div>
   </div>

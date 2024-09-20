@@ -83,7 +83,7 @@
 
 .v-main {
   overflow: hidden !important;
-  height: 100vh; /* Ensure it takes the full viewport height */
+  height: calc(100vh - var(--header-height)) !important;
   padding: 0 !important;
   margin: 0 !important;
   min-height: calc(100vh - var(--header-height)) !important;
@@ -94,6 +94,8 @@
 
 /* Remove padding and margin from Vuetify container and row */
 .v-container {
+  height: calc(100vh - var(--header-height)) !important;
+
   padding: 0 !important;
   margin: 0 !important;
 }
@@ -176,6 +178,11 @@
   padding: 20px;
   height: calc(100vh - var(--header-height));
   flex-direction: column;
+}
+
+.charts {
+  height: 100%; /* Make sure charts container takes the remaining height */
+  overflow: hidden; /* Hide overflow content */
 }
 
 /* Control Panel Font */

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-container fluid>
-      <v-row>
-        <!-- Sidebar with separate cards -->
+    <v-container fluid fill-height>
+      <v-row class="fill-height">
+        <!-- Sidebar -->
         <v-col cols="12" md="2" class="sideBar">
           <!-- Company Overview Card -->
           <v-card class="mb-4">
@@ -58,22 +58,40 @@
           </v-card>
         </v-col>
 
-        <!-- Scatter Plot -->
-        <v-col cols="12" md="5">
-          <ScatterPlot
-            :key="scatterPlotId"
-            :selectedCategory="categories.selectedValue"
-            @changeCurrentlySelectedCompany="changeCurrentlySelectedCompany"
-          />
-        </v-col>
+        <!-- Charts Container (Right side) -->
+        <v-col cols="12" md="10" class="d-flex flex-column fill-height charts">
+          <v-row class="fill-height">
+            <!-- Scatter Plot -->
+            <v-col cols="6" md="6" class="d-flex flex-column">
+              <ScatterPlot
+                :key="scatterPlotId"
+                :selectedCategory="categories.selectedValue"
+                @changeCurrentlySelectedCompany="changeCurrentlySelectedCompany"
+                style="flex-grow: 1; max-height: 100%"
+              />
+            </v-col>
 
-        <!-- Line Plot -->
-        <v-col cols="12" md="5">
-          <LinePlot
-            :key="linePlotId"
-            :selectedCompany="companies.selectedValue"
-            :selectedAlgorithm="algorithm.selectedValue"
-          />
+            <!-- Line Plot -->
+            <v-col cols="6" md="6" class="d-flex flex-column">
+              <LinePlot
+                :key="linePlotId"
+                :selectedCompany="companies.selectedValue"
+                :selectedAlgorithm="algorithm.selectedValue"
+                style="flex-grow: 1; max-height: 100%"
+              />
+            </v-col>
+          </v-row>
+
+          <!-- Bar Chart (Below the Scatter and Line Plot) -->
+          <v-row class="fill-height">
+            <v-col cols="12" md="12" class="d-flex flex-column">
+              <BarChart
+                :selectedCategory="categories.selectedValue"
+                :selectedCompany="companies.selectedValue"
+                style="flex-grow: 1; max-height: 100%"
+              />
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -83,9 +101,10 @@
 <script>
 import ScatterPlot from "./ScatterPlot";
 import LinePlot from "./LinePlot";
+import BarChart from "./BarChart";
 
 export default {
-  components: { ScatterPlot, LinePlot },
+  components: { ScatterPlot, LinePlot, BarChart },
   data: () => ({
     scatterPlotId: 0,
     linePlotId: 0,
@@ -95,7 +114,7 @@ export default {
     },
     companies: {
       values: [], // Initialize empty array for companies
-      selectedValue: 1, // Set default selected company value to null
+      selectedValue: 1, // Set default selected company value
     },
     algorithm: {
       values: ["none", "random", "regression"],
