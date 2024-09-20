@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row align="center" justify="center" class="mt-1 mb-0">
-      <h3>Overview of Companies</h3>
+      <h3>Overview of {{ $props.selectedCategory }} Companies</h3>
     </v-row>
     <div style="height: 90vh">
       <div id="myScatterPlot" style="height: inherit"></div>
@@ -12,6 +12,15 @@
 import Plotly from "plotly.js/dist/plotly";
 export default {
   name: "ScatterPlot",
+  props: ["selectedCategory"],
+  watch: {
+    selectedCategory: function () {
+      this.ScatterPlotData.x = [];
+      this.ScatterPlotData.y = [];
+
+      this.fetchData();
+    },
+  },
   data: () => ({
     ScatterPlotData: { x: [], y: [] },
   }),
@@ -21,8 +30,11 @@ export default {
   methods: {
     async fetchData() {
       // req URL to retrieve companies from backend
-      var reqUrl = "http://127.0.0.1:5000/companies";
+      var reqUrl =
+        "http://127.0.0.1:5000/companies?category=" +
+        this.$props.selectedCategory;
       console.log("ReqURL " + reqUrl);
+
       // await response and data
       const response = await fetch(reqUrl);
       const responseData = await response.json();

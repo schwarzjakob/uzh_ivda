@@ -16,6 +16,7 @@
                   label="Select a category"
                   dense
                   v-model="categories.selectedValue"
+                  @change="changeCategory"
                 ></v-select>
               </v-col>
             </v-row>
@@ -31,6 +32,7 @@
                   label="Select a company"
                   dense
                   v-model="companies.selectedValue"
+                  @change="changeCompany"
                 ></v-select>
               </v-col>
             </v-row>
@@ -38,19 +40,27 @@
               <v-col cols="12" sm="12">
                 <v-select
                   :items="algorithm.values"
-                  label="Select an algorithm"
+                  label="Select an algorithm for prediction"
                   dense
                   v-model="algorithm.selectedValue"
+                  @change="changeAlgorithm"
                 ></v-select>
               </v-col>
             </v-row>
           </v-card>
         </v-col>
         <v-col cols="12" md="5">
-          <ScatterPlot />
+          <ScatterPlot
+            :key="scatterPlotId"
+            :selectedCategory="categories.selectedValue"
+          />
         </v-col>
         <v-col cols="12" md="5">
-          <LinePlot />
+          <LinePlot
+            :key="linePlotId"
+            :selectedCompany="companies.selectedValue"
+            :selectedAlgorithm="algorithm.selectedValue"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -62,6 +72,8 @@ import LinePlot from "./LinePlot";
 export default {
   components: { ScatterPlot, LinePlot },
   data: () => ({
+    scatterPlotId: 0,
+    linePlotId: 0,
     categories: {
       values: ["All", "tech", "health", "bank"],
       selectedValue: "All",
@@ -73,6 +85,17 @@ export default {
     algorithm: {
       values: ["none", "random", "regression"],
       selectedValue: "none",
+    },
+    methods: {
+      changeCategory() {
+        this.scatterPlotId += 1;
+      },
+      changeCompany() {
+        this.linePlotId += 1;
+      },
+      changeAlgorithm() {
+        this.linePlotId += 1;
+      },
     },
   }),
 };

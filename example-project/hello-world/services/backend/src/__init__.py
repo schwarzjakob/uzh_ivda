@@ -4,6 +4,7 @@ from flask_restx import Resource, Api
 from flask_pymongo import PyMongo
 from pymongo.collection import Collection
 from .model import Company
+from flask import request
 
 # Configure Flask & Flask-PyMongo:
 app = Flask(__name__)
@@ -19,8 +20,18 @@ api = Api(app)
 
 
 class CompaniesList(Resource):
-    def get(self):
-        cursor = companies.find()
+    def get(self, args=None):
+        # retrieve the arguments and convert to a dict
+        args = request.args.to_dict()
+        print(args)
+        # If the user specified category is "All" we retrieve all companies
+        if args["category"] == "All":
+            cursor = companies.find()
+        # In any other case, we only return the companies where
+        # the category applies
+        else:
+            cursor = companies.find(args)
+        # we return all companies as json
         return [Company(**doc).to_json() for doc in cursor]
 
 
