@@ -76,6 +76,11 @@
               <LinePlot
                 :key="linePlotId"
                 :selectedCompany="companies.selectedValue"
+                :selectedCompanyName="
+                  companies.values.find(
+                    (company) => company.id === companies.selectedValue
+                  )?.name
+                "
                 :selectedAlgorithm="algorithm.selectedValue"
                 style="flex-grow: 1; max-height: 100%"
               />

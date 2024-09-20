@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row align="center" justify="center" class="mt-1 mb-0">
-      <h3>Profit View of Company: {{ $props.selectedCompany }}</h3>
+      <h3>Profit View of Company: {{ $props.selectedCompanyName }}</h3>
     </v-row>
     <div style="height: 100%">
       <div id="myLinePlot" style="height: inherit"></div>
@@ -13,7 +13,7 @@
 import Plotly from "plotly.js/dist/plotly";
 export default {
   name: "LinePlot",
-  props: ["selectedCompany", "selectedAlgorithm"],
+  props: ["selectedCompany", "selectedCompanyName", "selectedAlgorithm"],
   watch: {
     selectedCompany() {
       this.LinePlotData.x = [];

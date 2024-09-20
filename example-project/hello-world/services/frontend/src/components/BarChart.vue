@@ -3,8 +3,8 @@
     <v-row align="center" justify="center" class="mt-1 mb-0">
       <h3>Profit per Employee: {{ selectedCompanyName }}</h3>
     </v-row>
-    <div>
-      <div id="myBarChart"></div>
+    <div style="height: 100%">
+      <div id="myBarChart" style="height: inherit"></div>
     </div>
   </div>
 </template>
