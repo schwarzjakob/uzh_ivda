@@ -5,3 +5,5 @@ fastapi
 flask_pymongo
 pymongo
 flask_cors
+pandas
+statsmodels
