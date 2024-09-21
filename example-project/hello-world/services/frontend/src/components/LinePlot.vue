@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row align="center" justify="center" class="mt-1 mb-0">
-      <h3>Profit View of Company: {{ $props.selectedCompanyName }}</h3>
+      <h3>Profit View of {{ capitalizedCompanyName }}</h3>
     </v-row>
     <div style="height: 100%">
       <div id="myLinePlot" style="height: inherit"></div>
@@ -14,6 +14,15 @@ import Plotly from "plotly.js/dist/plotly";
 export default {
   name: "LinePlot",
   props: ["selectedCompany", "selectedCompanyName", "selectedAlgorithm"],
+  computed: {
+    capitalizedCompanyName() {
+      if (!this.selectedCompanyName) return "";
+      return (
+        this.selectedCompanyName.charAt(0).toUpperCase() +
+        this.selectedCompanyName.slice(1)
+      );
+    },
+  },
   watch: {
     selectedCompany() {
       this.LinePlotData.x = [];

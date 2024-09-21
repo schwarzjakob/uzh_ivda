@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row align="center" justify="center" class="mt-1 mb-0">
-      <h3>Profit per Employee: {{ selectedCompanyName }}</h3>
+      <h3>Profit per Employee at {{ capitalizedCompanyName }}</h3>
     </v-row>
     <div style="height: 100%">
       <div id="myBarChart" style="height: inherit"></div>
@@ -15,6 +15,15 @@ import Plotly from "plotly.js/dist/plotly";
 export default {
   name: "BarChart",
   props: ["selectedCategory", "selectedCompany"],
+  computed: {
+    capitalizedCompanyName() {
+      if (!this.selectedCompanyName) return "";
+      return (
+        this.selectedCompanyName.charAt(0).toUpperCase() +
+        this.selectedCompanyName.slice(1)
+      );
+    },
+  },
   data() {
     return {
       barChartData: { x: [], y: [], color: [], name: [] },

@@ -1,5 +1,3 @@
-# services/backend/src/llm/groq_llm.py
-
 import os
 import requests
 import json
@@ -26,11 +24,49 @@ class GroqClient:
         with open(prompt_file_path, "r") as file:
             messages_data = json.load(file)
 
-        # **Replace {company} in the prompt**
+        # Replace {company} in the prompt
         for message in messages_data["messages"]:
             message["content"] = message["content"].replace("{company}", company_name)
 
-        # **Debugging: Print the final messages sent to the API**
+        # Debugging: Print the final messages sent to the API
+        print(f"Final messages sent to Groq API: {messages_data['messages']}")
+
+        # Make the API request
+        response = requests.post(
+            url,
+            json={"model": "llama3-8b-8192", "messages": messages_data["messages"]},
+            headers=headers,
+        )
+
+        if response.status_code == 200:
+            return response.json()["choices"][0]["message"]["content"]
+        else:
+            return f"Error: {response.status_code} - {response.text}"
+
+    def generate_additional_information(
+        self, company_name, founding_year, employees, prompt_file_path
+    ):
+        url = f"{self.base_url}/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+
+        # Load prompt file
+        with open(prompt_file_path, "r") as file:
+            messages_data = json.load(file)
+
+        # Replace placeholders in the prompt
+        for message in messages_data["messages"]:
+            message["content"] = message["content"].replace("{company}", company_name)
+            message["content"] = message["content"].replace(
+                "{founding_year}", str(founding_year)
+            )
+            message["content"] = message["content"].replace(
+                "{employees}", str(employees)
+            )
+
+        # Debugging: Print the final messages sent to the API
         print(f"Final messages sent to Groq API: {messages_data['messages']}")
 
         # Make the API request

@@ -57,15 +57,83 @@
             </v-row>
           </v-card>
 
-          <!-- Generate Poem Button -->
+          <!-- Generate Poem Button with Tooltip -->
           <v-card class="mb-4">
-            <v-row>
-              <v-col cols="12" sm="12">
-                <v-btn class="btn" width="100%" @click="openPoemDialog">
-                  Generate Poem
-                </v-btn>
-              </v-col>
-            </v-row>
+            <v-card-text>
+              <v-tooltip bottom>
+                <template #activator="{ on, attrs }">
+                  <v-btn
+                    class="btn"
+                    width="100%"
+                    @click="openPoemDialog"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    {{
+                      companies.values
+                        .find(
+                          (company) => company.id === companies.selectedValue
+                        )
+                        ?.name.charAt(0)
+                        .toUpperCase() +
+                      companies.values
+                        .find(
+                          (company) => company.id === companies.selectedValue
+                        )
+                        ?.name.slice(1) +
+                      " Poem"
+                    }}
+                  </v-btn>
+                </template>
+                <span>
+                  <strong>Query Parameters:</strong>
+                  <ul class="mt-2">
+                    <li>Company Name</li>
+                  </ul>
+                </span>
+              </v-tooltip>
+            </v-card-text>
+          </v-card>
+
+          <!-- Generate Additional Information Button with Tooltip -->
+          <v-card class="mb-4">
+            <v-card-text>
+              <v-tooltip bottom>
+                <template #activator="{ on, attrs }">
+                  <v-btn
+                    class="btn"
+                    width="100%"
+                    @click="openAdditionalInfoDialog"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    Additional
+                    {{
+                      companies.values
+                        .find(
+                          (company) => company.id === companies.selectedValue
+                        )
+                        ?.name.charAt(0)
+                        .toUpperCase() +
+                      companies.values
+                        .find(
+                          (company) => company.id === companies.selectedValue
+                        )
+                        ?.name.slice(1)
+                    }}
+                    Information
+                  </v-btn>
+                </template>
+                <span>
+                  <strong>Query Parameters:</strong>
+                  <ul class="mt-2">
+                    <li>Company Name</li>
+                    <li>Founding Year</li>
+                    <li>Number of Employees</li>
+                  </ul>
+                </span>
+              </v-tooltip>
+            </v-card-text>
           </v-card>
         </v-col>
 
@@ -113,22 +181,35 @@
     </v-container>
 
     <!-- Poem Dialog -->
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="poemDialog" max-width="800px">
       <v-card>
         <v-card-title>
-          <span class="headline">Company Poem</span>
+          <span class="headline">
+            {{
+              companies.values
+                .find((company) => company.id === companies.selectedValue)
+                ?.name.charAt(0)
+                .toUpperCase() +
+              companies.values
+                .find((company) => company.id === companies.selectedValue)
+                ?.name.slice(1) +
+              " Poem"
+            }}
+          </span>
         </v-card-title>
 
         <v-card-text>
-          <div v-if="isLoading" class="d-flex justify-center">
+          <!-- Query Parameters Section -->
+          <div><strong>Query Parameters:</strong> Company Name</div>
+          <br />
+          <!-- Poem Content -->
+          <div v-if="isPoemLoading" class="d-flex justify-center">
             <v-progress-circular
               indeterminate
               color="primary"
             ></v-progress-circular>
           </div>
-          <div v-else-if="poem">
-            <p>{{ poem }}</p>
-          </div>
+          <div v-else-if="poem" v-html="parsedPoem"></div>
           <div v-else>
             <p>No poem available. Please generate one.</p>
           </div>
@@ -140,6 +221,57 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- Additional Information Dialog -->
+    <v-dialog v-model="additionalInfoDialog" max-width="800px">
+      <v-card>
+        <v-card-title>
+          <span class="headline"
+            >Additional
+            {{
+              companies.values
+                .find((company) => company.id === companies.selectedValue)
+                ?.name.charAt(0)
+                .toUpperCase() +
+              companies.values
+                .find((company) => company.id === companies.selectedValue)
+                ?.name.slice(1)
+            }}
+            Information</span
+          >
+        </v-card-title>
+
+        <v-card-text>
+          <!-- Query Parameters Section -->
+          <div>
+            <strong>Query Parameters:</strong> Company Name, Founding Year,
+            Number of Employees
+          </div>
+          <br />
+          <!-- Additional Information Content -->
+          <div v-if="isAdditionalInfoLoading" class="d-flex justify-center">
+            <v-progress-circular
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
+          </div>
+          <div
+            v-else-if="additionalInformation"
+            v-html="parsedAdditionalInformation"
+          ></div>
+          <div v-else>
+            <p>No additional information available. Please generate one.</p>
+          </div>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="closeAdditionalInfoDialog"
+            >Close</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -147,6 +279,7 @@
 import ScatterPlot from "./ScatterPlot";
 import LinePlot from "./LinePlot";
 import BarChart from "./BarChart";
+import { marked } from "marked"; // Import marked
 
 export default {
   components: { ScatterPlot, LinePlot, BarChart },
@@ -166,15 +299,27 @@ export default {
       selectedValue: "none",
     },
     poem: "", // Initialize poem data
-    dialog: false, // Control dialog visibility
-    isLoading: false, // Loading state for poem generation
+    poemDialog: false, // Control poem dialog visibility
+    isPoemLoading: false, // Loading state for poem generation
+    additionalInformation: "", // Initialize additional information data
+    additionalInfoDialog: false, // Control additional info dialog visibility
+    isAdditionalInfoLoading: false, // Loading state for additional info generation
   }),
+  computed: {
+    parsedPoem() {
+      return marked(this.poem);
+    },
+    parsedAdditionalInformation() {
+      return marked(this.additionalInformation);
+    },
+  },
   watch: {
     "companies.selectedValue"(newVal, oldVal) {
       console.log(
-        `Company changed from ${oldVal} to ${newVal}. Clearing poem.`
+        `Company changed from ${oldVal} to ${newVal}. Clearing poem and additional information.`
       );
       this.poem = ""; // Clear the poem when a new company is selected
+      this.additionalInformation = ""; // Clear additional information
     },
   },
   mounted() {
@@ -249,12 +394,13 @@ export default {
       this.companies.selectedValue = companyId;
       this.changeCompany();
     },
+    // Poem Dialog Methods
     openPoemDialog() {
-      this.dialog = true; // Open the dialog
+      this.poemDialog = true; // Open the dialog
       this.fetchPoem(); // Fetch the poem when dialog opens
     },
     closePoemDialog() {
-      this.dialog = false; // Close the dialog
+      this.poemDialog = false; // Close the dialog
     },
     fetchPoem() {
       console.log("Fetching poem for company:", this.companies.selectedValue);
@@ -265,7 +411,7 @@ export default {
         return;
       }
       const companyId = this.companies.selectedValue;
-      this.isLoading = true; // Start loading
+      this.isPoemLoading = true; // Start loading
       fetch(`http://localhost:5000/llm/groq/poem/${companyId}`)
         .then((response) => response.json())
         .then((data) => {
@@ -282,7 +428,55 @@ export default {
           this.poem = "An error occurred while generating the poem.";
         })
         .finally(() => {
-          this.isLoading = false; // End loading
+          this.isPoemLoading = false; // End loading
+        });
+    },
+
+    // Additional Information Dialog Methods
+    openAdditionalInfoDialog() {
+      this.additionalInfoDialog = true; // Open the dialog
+      this.fetchAdditionalInformation(); // Fetch the additional information when dialog opens
+    },
+    closeAdditionalInfoDialog() {
+      this.additionalInfoDialog = false; // Close the dialog
+    },
+    fetchAdditionalInformation() {
+      console.log(
+        "Fetching additional information for company:",
+        this.companies.selectedValue
+      );
+      if (!this.companies.selectedValue) {
+        console.error("No company selected");
+        this.additionalInformation =
+          "No company selected. Please select a company to generate additional information.";
+        return;
+      }
+      const companyId = this.companies.selectedValue;
+      this.isAdditionalInfoLoading = true; // Start loading
+      fetch(
+        `http://localhost:5000/llm/groq/additional_information/${companyId}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.additional_information) {
+            console.log(
+              "Received additional information:",
+              data.additional_information
+            );
+            this.additionalInformation = data.additional_information;
+          } else {
+            console.error("Error fetching the additional information:", data);
+            this.additionalInformation =
+              "Sorry, I couldn't generate additional information at this time.";
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching the additional information:", error);
+          this.additionalInformation =
+            "An error occurred while generating the additional information.";
+        })
+        .finally(() => {
+          this.isAdditionalInfoLoading = false; // End loading
         });
     },
   },

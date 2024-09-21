@@ -1,0 +1,12 @@
+{
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are an AI that provides detailed and insightful information about companies."
+        },
+        {
+            "role": "user",
+            "content": "Provide an overview of the company {company}, including its founding year {founding_year} and the number of employees {employees}."
+        }
+    ]
+}

@@ -32,7 +32,7 @@ class CompaniesList(Resource):
         args = request.args.to_dict()
         print(args)
         # If the user specified category is "All" we retrieve all companies
-        if args["category"] == "All":
+        if args.get("category") == "All":
             cursor = companies.find()
         # In any other case, we only return the companies where
         # the category applies
@@ -115,4 +115,58 @@ def get_poem(id):
     # Generate the poem
     poem = groq_client.generate_poem(company_name, prompt_file_path)
 
+    # Debugging: Print the generated poem
+    print(f"Generated poem: {poem}")
+
+    # Check if the poem contains the placeholder (indicating replacement failure)
+    if "{company}" in poem:
+        return jsonify(
+            {
+                "poem": f"I'd be happy to! Unfortunately, I wasn't able to find specific information about the company \"{company_name}\". Could you please provide more context or details about the company you're interested in?"
+            }
+        )
+
     return jsonify({"poem": poem})
+
+
+# New endpoint for generating additional information
+@app.route("/llm/groq/additional_information/<int:id>", methods=["GET"])
+def get_additional_information(id):
+    # Get the company details based on id
+    company_doc = companies.find_one({"id": id})
+    if not company_doc:
+        return jsonify({"error": "Company not found"}), 404
+
+    company_name = company_doc.get("name")
+    founding_year = company_doc.get("founding_year")
+    employees = company_doc.get("employees")
+
+    # Path to the new prompt file
+    prompt_file_path = os.path.join(
+        os.path.dirname(__file__),
+        "llm",
+        "prompts",
+        "groq_api_additional_information.json",
+    )
+
+    # Generate the additional information
+    additional_info = groq_client.generate_additional_information(
+        company_name, founding_year, employees, prompt_file_path
+    )
+
+    # Debugging: Print the generated additional information
+    print(f"Generated additional information: {additional_info}")
+
+    # Check if placeholders are still present
+    if (
+        "{company}" in additional_info
+        or "{founding_year}" in additional_info
+        or "{employees}" in additional_info
+    ):
+        return jsonify(
+            {
+                "additional_information": f"I'd be happy to! Unfortunately, I couldn't retrieve detailed information about the company \"{company_name}\". Could you please provide more specific details or check the company data?"
+            }
+        )
+
+    return jsonify({"additional_information": additional_info})

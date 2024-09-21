@@ -11,6 +11,7 @@
     "@mdi/font": "5.9.55",
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
+    "marked": "^14.1.2",
     "node": "^22.9.0",
     "plotly.js": "^2.35.2",
     "roboto-fontface": "*",
