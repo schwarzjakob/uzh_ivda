@@ -1,12 +1,14 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_restx import Resource, Api
 from flask_pymongo import PyMongo
 from pymongo.collection import Collection
 from .model import Company
+from .llm.groq_llm import GroqClient
 from flask import request
 import pandas as pd
 from statsmodels.tsa.ar_model import AutoReg
+import os
 
 # Configure Flask & Flask-PyMongo:
 app = Flask(__name__)
@@ -19,6 +21,9 @@ pymongo = PyMongo(app)
 # Get a reference to the companies collection.
 companies: Collection = pymongo.db.companies
 api = Api(app)
+
+# Initialize GroqClient
+groq_client = GroqClient()
 
 
 class CompaniesList(Resource):
@@ -91,3 +96,23 @@ class Companies(Resource):
 
 api.add_resource(CompaniesList, "/companies")
 api.add_resource(Companies, "/companies/<int:id>")
+
+
+# New endpoint for generating a poem
+@app.route("/llm/groq/poem/<int:id>", methods=["GET"])
+def get_poem(id):
+    # Get the company name based on id
+    company_doc = companies.find_one({"id": id})
+    if not company_doc:
+        return jsonify({"error": "Company not found"}), 404
+    company_name = company_doc["name"]
+
+    # Path to the prompt file
+    prompt_file_path = os.path.join(
+        os.path.dirname(__file__), "llm", "prompts", "groq_api_poem.json"
+    )
+
+    # Generate the poem
+    poem = groq_client.generate_poem(company_name, prompt_file_path)
+
+    return jsonify({"poem": poem})

@@ -238,3 +238,9 @@
 .v-select {
   pointer-events: auto !important; /* Allow interaction with select field */
 }
+
+.btn {
+  background-color: var(--uzh-blue) !important;
+  color: var(--uzh-white) !important;
+  border-radius: 0.25rem !important;
+}

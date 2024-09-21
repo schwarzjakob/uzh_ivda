@@ -25,7 +25,7 @@
           </v-card>
 
           <!-- Profit View Card -->
-          <v-card>
+          <v-card class="mb-4">
             <v-row>
               <v-col cols="12" sm="12">
                 <div class="control-panel-font">Profit View of Company</div>
@@ -53,6 +53,17 @@
                   v-model="algorithm.selectedValue"
                   @change="changeAlgorithm"
                 ></v-select>
+              </v-col>
+            </v-row>
+          </v-card>
+
+          <!-- Generate Poem Button -->
+          <v-card class="mb-4">
+            <v-row>
+              <v-col cols="12" sm="12">
+                <v-btn class="btn" width="100%" @click="openPoemDialog">
+                  Generate Poem
+                </v-btn>
               </v-col>
             </v-row>
           </v-card>
@@ -100,6 +111,35 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <!-- Poem Dialog -->
+    <v-dialog v-model="dialog" max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Company Poem</span>
+        </v-card-title>
+
+        <v-card-text>
+          <div v-if="isLoading" class="d-flex justify-center">
+            <v-progress-circular
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
+          </div>
+          <div v-else-if="poem">
+            <p>{{ poem }}</p>
+          </div>
+          <div v-else>
+            <p>No poem available. Please generate one.</p>
+          </div>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="closePoemDialog">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -125,7 +165,18 @@ export default {
       values: ["none", "random", "regression"],
       selectedValue: "none",
     },
+    poem: "", // Initialize poem data
+    dialog: false, // Control dialog visibility
+    isLoading: false, // Loading state for poem generation
   }),
+  watch: {
+    "companies.selectedValue"(newVal, oldVal) {
+      console.log(
+        `Company changed from ${oldVal} to ${newVal}. Clearing poem.`
+      );
+      this.poem = ""; // Clear the poem when a new company is selected
+    },
+  },
   mounted() {
     console.log("Component mounted. Now fetching companies.");
     this.fetchCompanies();
@@ -197,6 +248,42 @@ export default {
     changeCurrentlySelectedCompany(companyId) {
       this.companies.selectedValue = companyId;
       this.changeCompany();
+    },
+    openPoemDialog() {
+      this.dialog = true; // Open the dialog
+      this.fetchPoem(); // Fetch the poem when dialog opens
+    },
+    closePoemDialog() {
+      this.dialog = false; // Close the dialog
+    },
+    fetchPoem() {
+      console.log("Fetching poem for company:", this.companies.selectedValue);
+      if (!this.companies.selectedValue) {
+        console.error("No company selected");
+        this.poem =
+          "No company selected. Please select a company to generate a poem.";
+        return;
+      }
+      const companyId = this.companies.selectedValue;
+      this.isLoading = true; // Start loading
+      fetch(`http://localhost:5000/llm/groq/poem/${companyId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.poem) {
+            console.log("Received poem:", data.poem);
+            this.poem = data.poem;
+          } else {
+            console.error("Error fetching the poem:", data);
+            this.poem = "Sorry, I couldn't generate a poem at this time.";
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching the poem:", error);
+          this.poem = "An error occurred while generating the poem.";
+        })
+        .finally(() => {
+          this.isLoading = false; // End loading
+        });
     },
   },
 };
