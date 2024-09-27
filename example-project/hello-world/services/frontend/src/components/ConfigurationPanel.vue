@@ -65,9 +65,9 @@
                   <v-btn
                     class="btn"
                     width="100%"
-                    @click="openPoemDialog"
                     v-bind="attrs"
-                    v-on="on"
+                    v-on="on || {}"
+                    @click="openPoemDialog"
                   >
                     {{
                       companies.values
@@ -95,7 +95,7 @@
             </v-card-text>
           </v-card>
 
-          <!-- Generate Additional Information -->
+          <!-- Generate Additional Information Button -->
           <v-card class="mb-4">
             <v-card-text>
               <v-tooltip bottom>
@@ -103,9 +103,9 @@
                   <v-btn
                     class="btn"
                     width="100%"
-                    @click="openAdditionalInfoDialog"
                     v-bind="attrs"
-                    v-on="on"
+                    v-on="on || {}"
+                    @click="openAdditionalInfoDialog"
                   >
                     Additional
                     {{
@@ -369,14 +369,12 @@ export default {
           return response.json();
         })
         .then((data) => {
-          console.log("Parsed JSON data:", data);
           const updatedCompanies = data.map((company) => ({
             id: company.id,
             name: company.name,
             founding_year: company.founding_year, // Ensure these fields are present
             employees: company.employees, // Ensure these fields are present
           }));
-          console.log("Fetched companies:", updatedCompanies);
 
           this.companies.values = [...updatedCompanies];
           if (this.companies.values.length > 0) {
