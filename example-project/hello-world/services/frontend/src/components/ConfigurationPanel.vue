@@ -209,7 +209,11 @@
                 color="primary"
               ></v-progress-circular>
             </div>
-            <div v-else-if="poem" v-html="parsedPoem"></div>
+            <div
+              v-else-if="poem"
+              class="poem-content"
+              v-html="parsedPoem"
+            ></div>
             <div v-else>
               <p>No poem available. Please generate one.</p>
             </div>
@@ -263,6 +267,7 @@
             </div>
             <div
               v-else-if="additionalInformation"
+              class="additional-info-content"
               v-html="parsedAdditionalInformation"
             ></div>
             <div v-else>
