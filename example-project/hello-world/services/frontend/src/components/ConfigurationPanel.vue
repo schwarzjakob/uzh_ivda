@@ -57,7 +57,7 @@
             </v-row>
           </v-card>
 
-          <!-- Generate Poem Button with Tooltip -->
+          <!-- Generate Poem Button -->
           <v-card class="mb-4">
             <v-card-text>
               <v-tooltip bottom>
@@ -95,7 +95,7 @@
             </v-card-text>
           </v-card>
 
-          <!-- Generate Additional Information Button with Tooltip -->
+          <!-- Generate Additional Information -->
           <v-card class="mb-4">
             <v-card-text>
               <v-tooltip bottom>
@@ -199,19 +199,28 @@
         </v-card-title>
 
         <v-card-text>
-          <!-- Query Parameters Section -->
-          <div><strong>Query Parameters:</strong> Company Name</div>
-          <br />
-          <!-- Poem Content -->
-          <div v-if="isPoemLoading" class="d-flex justify-center">
-            <v-progress-circular
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
+          <!-- Generated Poem Section -->
+          <div>
+            <strong>Generated Poem:</strong>
+            <br />
+            <div v-if="isPoemLoading" class="d-flex justify-center">
+              <v-progress-circular
+                indeterminate
+                color="primary"
+              ></v-progress-circular>
+            </div>
+            <div v-else-if="poem" v-html="parsedPoem"></div>
+            <div v-else>
+              <p>No poem available. Please generate one.</p>
+            </div>
           </div>
-          <div v-else-if="poem" v-html="parsedPoem"></div>
-          <div v-else>
-            <p>No poem available. Please generate one.</p>
+          <br />
+          <!-- Prompt and Parameters Section -->
+          <div>
+            <strong>Prompt Sent to API:</strong>
+            <p>{{ poemPrompt }}</p>
+            <strong>Params:</strong>
+            <p>company name</p>
           </div>
         </v-card-text>
 
@@ -226,8 +235,8 @@
     <v-dialog v-model="additionalInfoDialog" max-width="800px">
       <v-card>
         <v-card-title>
-          <span class="headline"
-            >Additional
+          <span class="headline">
+            Additional
             {{
               companies.values
                 .find((company) => company.id === companies.selectedValue)
@@ -237,30 +246,36 @@
                 .find((company) => company.id === companies.selectedValue)
                 ?.name.slice(1)
             }}
-            Information</span
-          >
+            Information
+          </span>
         </v-card-title>
 
         <v-card-text>
-          <!-- Query Parameters Section -->
+          <!-- Generated Additional Information Section -->
           <div>
-            <strong>Query Parameters:</strong> Company Name, Founding Year,
-            Number of Employees
+            <strong>Generated Information:</strong>
+            <br />
+            <div v-if="isAdditionalInfoLoading" class="d-flex justify-center">
+              <v-progress-circular
+                indeterminate
+                color="primary"
+              ></v-progress-circular>
+            </div>
+            <div
+              v-else-if="additionalInformation"
+              v-html="parsedAdditionalInformation"
+            ></div>
+            <div v-else>
+              <p>No additional information available. Please generate one.</p>
+            </div>
           </div>
           <br />
-          <!-- Additional Information Content -->
-          <div v-if="isAdditionalInfoLoading" class="d-flex justify-center">
-            <v-progress-circular
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
-          </div>
-          <div
-            v-else-if="additionalInformation"
-            v-html="parsedAdditionalInformation"
-          ></div>
-          <div v-else>
-            <p>No additional information available. Please generate one.</p>
+          <!-- Prompt and Parameters Section -->
+          <div>
+            <strong>Prompt Sent to API:</strong>
+            <p>{{ additionalInfoPrompt }}</p>
+            <strong>Params:</strong>
+            <p>company name, founding year, number of employees</p>
           </div>
         </v-card-text>
 
@@ -312,6 +327,24 @@ export default {
     parsedAdditionalInformation() {
       return marked(this.additionalInformation);
     },
+    poemPrompt() {
+      if (!this.companies.selectedValue) return "No company selected.";
+      const companyName = this.companies.values.find(
+        (company) => company.id === this.companies.selectedValue
+      )?.name;
+      return `Please provide a poem or information about the company ${companyName}.`;
+    },
+    additionalInfoPrompt() {
+      if (!this.companies.selectedValue) return "No company selected.";
+      const company = this.companies.values.find(
+        (company) => company.id === this.companies.selectedValue
+      );
+
+      const foundingYear = company.founding_year || "unknown";
+      const employees = company.employees || "unknown";
+
+      return `Provide an overview of the company ${company.name}, including its founding year ${foundingYear} and the number of employees ${employees}.`;
+    },
   },
   watch: {
     "companies.selectedValue"(newVal, oldVal) {
@@ -333,7 +366,6 @@ export default {
 
       fetch(`http://localhost:5000/companies?category=${category}`)
         .then((response) => {
-          console.log("API response received:", response);
           return response.json();
         })
         .then((data) => {
@@ -341,6 +373,8 @@ export default {
           const updatedCompanies = data.map((company) => ({
             id: company.id,
             name: company.name,
+            founding_year: company.founding_year, // Ensure these fields are present
+            employees: company.employees, // Ensure these fields are present
           }));
           console.log("Fetched companies:", updatedCompanies);
 
