@@ -120,7 +120,7 @@ export default {
 
       var layout = {
         xaxis: {
-          title: "Year",
+          title: "Fiscal Year",
           zeroline: false,
         },
         yaxis: {

@@ -1,7 +1,14 @@
 <template>
   <div>
     <v-row align="center" justify="center" class="mt-1 mb-0">
-      <h3>Overview of {{ $props.selectedCategory }} Companies</h3>
+      <h3>
+        Employees vs Founding Year for
+        {{
+          $props.selectedCategory.charAt(0).toUpperCase() +
+          this.selectedCategory.slice(1)
+        }}
+        Companies
+      </h3>
     </v-row>
     <div style="height: 100%">
       <div id="myScatterPlot" style="height: inherit"></div>

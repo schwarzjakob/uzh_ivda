@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-row align="center" justify="center" class="mt-1 mb-0">
-      <h3>Profit per Employee at {{ capitalizedCompanyName }}</h3>
+      <h3>
+        Comparing Profit per Employee at {{ capitalizedCompanyName }} vs
+        Category Average
+      </h3>
     </v-row>
     <div style="height: 100%">
       <div id="myBarChart" style="height: inherit"></div>
@@ -53,6 +56,12 @@ export default {
       const response = await fetch(reqUrl);
       const companyData = await response.json();
 
+      // Fetch industry standard data
+      const industryReqUrl =
+        `http://127.0.0.1:5000/industry_standard/` + companyData.category;
+      const industryResponse = await fetch(industryReqUrl);
+      const industryData = await industryResponse.json();
+
       // Set company name for the header
       this.selectedCompanyName = companyData.name;
 
@@ -60,6 +69,7 @@ export default {
       this.barChartData.x = [];
       this.barChartData.y = [];
       this.barChartData.color = [];
+      const industryStandard = { x: [], y: [] };
 
       // Loop through the company's profit data and calculate profit per employee
       companyData.profit.forEach((profit) => {
@@ -67,27 +77,52 @@ export default {
         this.barChartData.x.push(profit.year);
         this.barChartData.y.push(profitPerEmployee);
         this.barChartData.color.push(this.colors[companyData.category]);
+
+        // Add industry standard value for the year if available
+        const industryProfit = industryData.find(
+          (item) => item.year === profit.year
+        );
+        if (industryProfit) {
+          industryStandard.x.push(profit.year);
+          industryStandard.y.push(industryProfit.value);
+        }
       });
 
-      // Draw the bar chart
-      this.drawBarChart();
+      // Draw the bar chart with the industry standard
+      this.drawBarChart(industryStandard);
     },
-    drawBarChart() {
-      const trace = {
+
+    drawBarChart(industryStandard) {
+      const companyTrace = {
         x: this.barChartData.x, // Years
         y: this.barChartData.y, // Profit per employee
         type: "bar",
-        text: this.barChartData.y.map((value) => value.toFixed(2)), // Round to 2 decimal places and convert to string
+        text: this.barChartData.y.map((value) => value.toFixed(2)), // Round to 2 decimal places
         marker: {
           color: this.barChartData.color,
         },
+        name: this.capitalizedCompanyName,
       };
 
-      const data = [trace];
+      const industryTrace = {
+        x: industryStandard.x, // Years
+        y: industryStandard.y, // Industry standard profit per employee
+        type: "scatter", // Change from 'bar' to 'scatter'
+        mode: "lines", // Set mode to 'lines' for a line plot
+        text: industryStandard.y.map((value) => value.toFixed(2)), // Round to 2 decimal places
+        line: {
+          color: "#bd3902", // Grey color for industry standard
+          width: 2, // Line width
+        },
+        name: "Category Average",
+      };
+
+      const data = [companyTrace, industryTrace];
       const layout = {
-        xaxis: { title: "Year" },
+        barmode: "group", // Show bars side by side
+        xaxis: { title: "Fiscal Year" },
         yaxis: { title: "Profit per Employee" },
-        showlegend: false,
+        showlegend: true,
       };
 
       const config = { responsive: true, displayModeBar: false };

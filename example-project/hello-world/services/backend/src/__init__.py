@@ -170,3 +170,38 @@ def get_additional_information(id):
         )
 
     return jsonify({"additional_information": additional_info})
+
+
+@app.route("/industry_standard/<string:category>", methods=["GET"])
+def get_industry_standard(category):
+    # Find all companies in the same category
+    cursor = companies.find({"category": category})
+    all_companies = [Company(**doc) for doc in cursor]
+
+    # Dictionary to store the cumulative profit and employee count for each year
+    industry_data = {}
+
+    # Loop through all companies in the category
+    for company in all_companies:
+        for profit_entry in company.profit:
+            year = profit_entry["year"]
+            profit_per_employee = profit_entry["value"] / company.employees
+
+            if year not in industry_data:
+                industry_data[year] = {
+                    "total_profit": 0,
+                    "total_employees": 0,
+                    "company_count": 0,
+                }
+
+            # Accumulate the profit per employee for that year
+            industry_data[year]["total_profit"] += profit_per_employee
+            industry_data[year]["company_count"] += 1
+
+    # Calculate the average profit per employee for each year
+    avg_profit_per_employee = [
+        {"year": year, "value": data["total_profit"] / data["company_count"]}
+        for year, data in industry_data.items()
+    ]
+
+    return jsonify(avg_profit_per_employee)
